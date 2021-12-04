@@ -41,4 +41,46 @@ def _set_sqlite_pragma(dbapi_connection, connection_record) -> None:
 		cursor.close()
 
 #: creating instance database (db)
+#: TODO: Ensure that db.Time == UTC
 db = SQLAlchemy(app=app)
+now = datetime.now()
+
+#:=============================================================================
+#: Models
+
+class User(db.Model):
+	"""
+	Defines a user inside the project.
+
+	TODOs:
+		- Add the columns:
+			- updated_at DateTime,
+			- deleted_at: DateTime and
+			- deleted: bool
+	"""
+	__tablename__ = "user"
+	id = db.Column(db.Integer, primary_key=True)
+	posts = db.relationship("BlogPost")
+	name = db.Column(db.String(50))
+	email = db.Column(db.String(50))
+	address = db.Column(db.String(200))
+	phone = db.Column(db.String(50))
+	created_at = db.Column(db.Date)
+
+
+class BlogPost(db.Model):
+	"""
+	Defines BlogPosts mades by some user, inside the project.
+
+	TODOs:
+		- Add the columns:
+			- updated_at DateTime,
+			- deleted_at: DateTime and
+			- deleted: bool
+	"""
+	__tablename__ = "blog_post"
+	id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+	title = db.Column(db.String(50))
+	body = db.Column(db.String(200))
+	created_at = db.Column(db.Date)
