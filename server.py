@@ -30,10 +30,10 @@ app = Flask(import_name=__name__)
 #: database configuration
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlitedb.file"
 #: ? why do not track any modification
-app.config["SQL_TRACK_MODIFICATIONS"] = 0
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = 0
 
 #: configure sqlite3 to enforce foreign key constraints
-@event.listens_for(target="Engine", identifier="connect")
+@event.listens_for(target=Engine, identifier="connect")
 def _set_sqlite_pragma(dbapi_connection, connection_record) -> None:
 	if isinstance(dbapi_connection, SQLite3Connection):
 		cursor: Cursor = dbapi_connection.cursor()
