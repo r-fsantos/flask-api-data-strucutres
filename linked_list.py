@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
 from typing import Any
+from datetime import datetime
 
 
 class Node:
@@ -47,7 +47,7 @@ class LinkedList:
 
 	def set_head(self, node: Node) -> None:
 		self._head = node
-	
+
 	def get_head(self) -> Node:
 		return self._head
 	
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 	node1 = Node(data="1", next_node=node2)
 	node0 = Node(data="0", next_node=node1)
 
-	ll: LinkedList = LinkedList()
-	ll.set_head(node=node0)
-	ll.set_last_node(node=node4)
-	ll.print()
+	linked_list: LinkedList = LinkedList()
+	linked_list.set_head(node=node0)
+	linked_list.set_last_node(node=node4)
+	linked_list.print()
