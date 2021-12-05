@@ -68,3 +68,16 @@ class LinkedList:
 
 		ll_string += "None"
 		print(ll_string)
+
+
+if __name__ == "__main__":
+	node4 = Node(data="4", next_node=None)
+	node3 = Node(data="3", next_node=node4)
+	node2 = Node(data="2", next_node=node3)
+	node1 = Node(data="1", next_node=node2)
+	node0 = Node(data="0", next_node=node1)
+
+	ll: LinkedList = LinkedList()
+	ll.set_head(node=node0)
+	ll.set_last_node(node=node4)
+	ll.print()
