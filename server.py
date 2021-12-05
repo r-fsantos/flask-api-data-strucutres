@@ -89,9 +89,29 @@ class BlogPost(db.Model):
 #: Routes
 
 # First of all, one must create the API Skeleton
-@app.route(rule="/users", methods=["POST"])
+@app.route(rule="/users/", methods=["POST"])
 def create_user():
-	pass
+	data: dict = request.get_json()
+	# TODO: Apply SRP (SOLID) and MVC architecture by
+	#	- Writing a controller and adding the persistence logic to it
+	#	- Add validation (has mandatory inputs? data format (email), str_len,)
+	new_user: User = User(
+		name=data["name"],
+		email=data["email"],
+		address=data["address"],
+		phone=data["phone"],
+	)
+	# Encapsulate into a Controller as well
+	db.session.add(new_user)
+	db.session.commit()
+
+	return jsonify(
+		{
+			"id": new_user.id,
+			"result": True,
+			"message": "New user created!",
+		}
+	), 201
 
 @app.route(rule="/users/descending_id", methods=["GET"])
 def get_users_in_descending_order():
