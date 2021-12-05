@@ -109,7 +109,7 @@ def get_user_by_id(id: int ):
 def delete_user(id: int):
 	pass
 
-@app.rout(rule="/blog-posts/<user_id>", methods=["POST"])
+@app.route(rule="/blog-posts/<user_id>", methods=["POST"])
 def create_blog_post(user_id: int):
 	pass
 
