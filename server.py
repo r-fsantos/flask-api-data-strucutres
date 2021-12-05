@@ -124,3 +124,8 @@ def get_blog_post(id: int):
 @app.route(rule="/blog-posts/<id>", methods=["DELETE"])
 def delete_blog_post(id: int):
 	pass
+
+
+if __name__ == "__main__":
+	# TODO: Only in local development
+	app.run(debug=True)
