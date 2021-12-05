@@ -57,6 +57,30 @@ class LinkedList:
 	def get_last_node(self) -> Node:
 		return self._last_node
 
+	def add_front(self, data: Any) -> None:
+		new_node: Node = Node(data=data, next_node=self.get_head())
+		self.set_head(node=new_node)
+	
+	def add_back(self, data: Any) -> None:
+		node: Node = self.get_head()
+
+		if node is None:  # this means that is empty, so
+			self.add_front(data=data)  # simply add it at the head
+		else:
+			new_last_node: Node = Node(data=data, next_node=None)
+
+		last_node: Node = self.get_last_node()
+		if last_node is not None:
+			last_node.set_next_node(node=new_last_node)
+
+		elif last_node is None:
+			print("...Iterating until the end to get the last reference...")
+			while node.get_next_node():
+				node = node.get_next_node()
+
+			node.set_next_node(node=new_last_node)
+			self.set_last_node(node=new_last_node)
+
 	def print(self) -> None:
 		ll_string: str = ""
 		node: Node = self.get_head()
