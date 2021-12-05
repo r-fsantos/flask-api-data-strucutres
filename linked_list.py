@@ -104,4 +104,16 @@ if __name__ == "__main__":
 	linked_list: LinkedList = LinkedList()
 	linked_list.set_head(node=node0)
 	linked_list.set_last_node(node=node4)
+	print("Creating the very first linked list:")
 	linked_list.print()
+
+	print()
+	print("Adding a new Head:")
+	linked_list.add_front(data="New Head")
+	linked_list.print()
+
+	print()
+	print("Adding a New Last Node:")
+	linked_list.add_back(data="New Last Node")
+	linked_list.print()
+
