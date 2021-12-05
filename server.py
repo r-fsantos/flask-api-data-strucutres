@@ -84,3 +84,43 @@ class BlogPost(db.Model):
 	title = db.Column(db.String(50))
 	body = db.Column(db.String(200))
 	created_at = db.Column(db.Date)
+
+#:=============================================================================
+#: Routes
+
+# First of all, one must create the API Skeleton
+@app.route(rule="/users", methods=["POST"])
+def create_user():
+	pass
+
+@app.route(rule="/users/descending_id", methods=["GET"])
+def get_users_in_descending_order():
+	pass
+
+@app.route(rule="/users/ascending_id", methods=["GET"])
+def get_users_in_ascending_order():
+	pass
+
+@app.route(rule="/users/<id>", methods=["GET"])
+def get_user_by_id(id: int ):
+	pass
+
+@app.route(rule="/users/<id>", methods=["DELETE"])
+def delete_user(id: int):
+	pass
+
+@app.rout(rule="/blog-posts/<user_id>", methods=["POST"])
+def create_blog_post(user_id: int):
+	pass
+
+@app.route(rule="/blog-posts/<user_id>", methods=["GET"])
+def get_all_blog_posts_by_user(user_id: int):
+	pass
+
+@app.route(rule="/blog-posts/<id>", methods=["GET"])
+def get_blog_post(id: int):
+	pass
+
+@app.route(rule="/blog-posts/<id>", methods=["DELETE"])
+def delete_blog_post(id: int):
+	pass
