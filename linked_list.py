@@ -89,18 +89,20 @@ if __name__ == "__main__":
 	node0 = Node(data="0", next_node=node1)
 
 	linked_list: LinkedList = LinkedList()
-	linked_list.set_head(node=node0)
-	linked_list.set_last_node(node=node4)
 	print("Creating the very first linked list:")
 	linked_list.print()
 
 	print()
-	print("Adding a new Head:")
+	print("Adding in the front:")
 	linked_list.add_front(data="New Head")
 	linked_list.print()
 
 	print()
-	print("Adding a New Last Node:")
-	linked_list.add_back(data="New Last Node")
+	print("Adding in the front:")
+	linked_list.add_front(data="New Head, Again!")
 	linked_list.print()
 
+	print()
+	print("Adding in the back:")
+	linked_list.add_back(data="New Last Node")
+	linked_list.print()
