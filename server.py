@@ -5,6 +5,7 @@ Main file application
 """
 
 from datetime import datetime
+from os import name
 
 # ORM imports
 from sqlalchemy import event
@@ -123,7 +124,7 @@ def get_users_in_ascending_order():
 
 @app.route(rule="/users/<id>", methods=["GET"])
 def get_user_by_id(id: int ):
-	pass
+	return {"id": id}
 
 @app.route(rule="/users/<id>", methods=["DELETE"])
 def delete_user(id: int):
