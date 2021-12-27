@@ -42,44 +42,31 @@ class LinkedList:
 	_last_node: Node
 
 	def __init__(self) -> None:
-		self._head: Node or None = None
-		self._last_node: Node or None = None
-
-	def set_head(self, node: Node) -> None:
-		self._head = node
+		self._head: Node = None
+		self._last_node: Node = None
 
 	def get_head(self) -> Node:
 		return self._head
-	
-	def set_last_node(self, node: Node) -> None:
-		self._last_node = node
-	
+
 	def get_last_node(self) -> Node:
 		return self._last_node
+	
+	def list_is_empty(self) -> bool:
+		return self._head is None
 
 	def add_front(self, data: Any) -> None:
-		new_node: Node = Node(data=data, next_node=self.get_head())
-		self.set_head(node=new_node)
-	
-	def add_back(self, data: Any) -> None:
-		node: Node = self.get_head()
-
-		if node is None:  # this means that is empty, so
-			self.add_front(data=data)  # simply add it at the head
+		if self.list_is_empty():
+			self._head = Node(data=data, next_node=None)
+			self._last_node = self._head
 		else:
-			new_last_node: Node = Node(data=data, next_node=None)
+			self._head = Node(data=data, next_node=self._head)
 
-		last_node: Node = self.get_last_node()
-		if last_node is not None:
-			last_node.set_next_node(node=new_last_node)
-
-		elif last_node is None:
-			print("...Iterating until the end to get the last reference...")
-			while node.get_next_node():
-				node = node.get_next_node()
-
-			node.set_next_node(node=new_last_node)
-			self.set_last_node(node=new_last_node)
+	def add_back(self, data: Any) -> None:
+		if self.list_is_empty():
+			self.add_front(data=data)
+		else:
+			self._last_node._next_node = Node(data=data, next_node=None)
+			self._last_node = self._last_node._next_node
 
 	def print(self) -> None:
 		ll_string: str = ""
