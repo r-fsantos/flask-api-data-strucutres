@@ -138,7 +138,23 @@ def get_all_users_in_descending_order():
 
 @app.route(rule="/users/ascending_id", methods=["GET"])
 def get_users_in_ascending_order():
-	pass
+	users: User = User.query.all()
+	users_linked_list: linked_list.LinkedList = linked_list.LinkedList()
+
+	for user in users:
+		users_linked_list.add_back(
+			data={
+				"id": user.id,
+				"name": user.name,
+				"email": user.email,
+				"address": user.address,
+				"phone": user.phone
+			}
+		)
+
+	users_list: list = users_linked_list.to_list()
+
+	return jsonify(users_list), 200
 
 @app.route(rule="/users/<id>", methods=["GET"])
 def get_user_by_id(id: int ):
