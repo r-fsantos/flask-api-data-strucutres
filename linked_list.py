@@ -92,6 +92,18 @@ class LinkedList:
 			node = node.get_next_node()
 
 		return array
+	
+	def get_user_by_id(self, id: int) -> dict:
+		import pdb; pdb.set_trace()
+		node: None = self.get_head()
+
+		while node:
+			data: dict = node.get_data()
+			if data["id"] == id:
+				return data
+			node = node.get_next_node()
+
+		return None
 
 
 if __name__ == "__main__":
