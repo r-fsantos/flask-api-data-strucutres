@@ -22,6 +22,8 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 
+import linked_list
+
 #: import_name: the name of the application package
 app = Flask(import_name=__name__)
 
@@ -115,8 +117,24 @@ def create_user():
 	), 201
 
 @app.route(rule="/users/descending_id", methods=["GET"])
-def get_users_in_descending_order():
-	pass
+def get_all_users_in_descending_order():
+	users: User = User.query.all()
+	users_linked_list: linked_list.LinkedList = linked_list.LinkedList()
+
+	for user in users:
+		users_linked_list.add_front(
+			data={
+				"id": user.id,
+				"name": user.name,
+				"email": user.email,
+				"address": user.address,
+				"phone": user.phone
+			}
+		)
+
+	users_list: list = users_linked_list.to_list()
+
+	return jsonify(users_list), 200
 
 @app.route(rule="/users/ascending_id", methods=["GET"])
 def get_users_in_ascending_order():
