@@ -157,8 +157,24 @@ def get_users_in_ascending_order() -> list:
 	return jsonify(users_list), 200
 
 @app.route(rule="/users/<id>", methods=["GET"])
-def get_user_by_id(id: int ):
-	return {"id": id}
+def get_user_by_id(id: int) -> list:
+	users: User = User.query.all()
+	users_linked_list: linked_list.LinkedList = linked_list.LinkedList()
+
+	for user in users:
+		users_linked_list.add_front(
+			data={
+				"id": user.id,
+				"name": user.name,
+				"email": user.email,
+				"address": user.address,
+				"phone": user.phone
+			}
+		)
+
+	user: dict = users_linked_list.get_user_by_id(id=int(id))
+
+	return jsonify(user), 200
 
 @app.route(rule="/users/<id>", methods=["DELETE"])
 def delete_user(id: int):
