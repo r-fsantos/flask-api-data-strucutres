@@ -79,6 +79,19 @@ class LinkedList:
 
 		ll_string += "None"
 		print(ll_string)
+	
+	def to_list(self) -> list:
+		if self.list_is_empty():
+			return []
+		
+		array: list = []
+		node: Node = self.get_head()
+
+		while node:
+			array.append(node.get_data())
+			node = node.get_next_node()
+
+		return array
 
 
 if __name__ == "__main__":
