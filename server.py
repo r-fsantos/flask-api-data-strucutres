@@ -93,7 +93,7 @@ class BlogPost(db.Model):
 
 # First of all, one must create the API Skeleton
 @app.route(rule="/users/", methods=["POST"])
-def create_user():
+def create_user() -> dict:
 	data: dict = request.get_json()
 	# TODO: Apply SRP (SOLID) and MVC architecture by
 	#	- Writing a controller and adding the persistence logic to it
@@ -117,7 +117,7 @@ def create_user():
 	), 201
 
 @app.route(rule="/users/descending_id", methods=["GET"])
-def get_all_users_in_descending_order():
+def get_all_users_in_descending_order() -> list:
 	users: User = User.query.all()
 	users_linked_list: linked_list.LinkedList = linked_list.LinkedList()
 
@@ -137,7 +137,7 @@ def get_all_users_in_descending_order():
 	return jsonify(users_list), 200
 
 @app.route(rule="/users/ascending_id", methods=["GET"])
-def get_users_in_ascending_order():
+def get_users_in_ascending_order() -> list:
 	users: User = User.query.all()
 	users_linked_list: linked_list.LinkedList = linked_list.LinkedList()
 
