@@ -178,7 +178,19 @@ def get_user_by_id(id: int) -> list:
 
 @app.route(rule="/users/<id>", methods=["DELETE"])
 def delete_user(id: int):
-	pass
+	user = User.query.filter_by(id=int(id)).first()
+	if not user:
+		return jsonify(
+			{
+			"result": False,
+			"message": f"There is not user with id: {id} registered!"
+			}
+		), 200
+
+	db.session.delete(user)
+	db.session.commit()
+
+	return jsonify({}), 200
 
 @app.route(rule="/blog-posts/<user_id>", methods=["POST"])
 def create_blog_post(user_id: int):
