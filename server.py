@@ -22,6 +22,7 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 
+from hash_table import HashTable
 from linked_list import LinkedList
 
 #: import_name: the name of the application package
@@ -47,6 +48,8 @@ def _set_sqlite_pragma(dbapi_connection, connection_record) -> None:
 #: TODO: Ensure that db.Time == UTC
 db = SQLAlchemy(app=app)
 now = datetime.now()
+
+HASH_TABLE_DEFAULT_SIZE: int = 5
 
 #:=============================================================================
 #: Models
@@ -196,7 +199,44 @@ def delete_user(id: int):
 
 @app.route(rule="/blog-posts/<user_id>", methods=["POST"])
 def create_blog_post(user_id: int):
-	pass
+	user = User.query.filter_by(id=int(user_id)).first()
+
+	if not user:
+		return jsonify(
+			{
+			"result": False,
+			"message": f"There is not user with id: {id} registered!"
+			}
+		), 400
+
+	data: dict = request.get_json()
+	# TODO: add lookup validation!
+
+	hash_table: HashTable = HashTable(table_size=HASH_TABLE_DEFAULT_SIZE)
+	hash_table.inserting(key="user_id", value=user_id)
+	hash_table.inserting(key="title", value=data.get("title"))
+	hash_table.inserting(key="body", value=data.get("body"))
+	hash_table.inserting(key="created_at", value=datetime.now())
+
+	blog_post: BlogPost = BlogPost(
+		user_id=hash_table.get_value(key="user_id"),
+		title=hash_table.get_value(key="title"),
+		body=hash_table.get_value(key="body"),
+		created_at=hash_table.get_value(key="created_at")
+	)
+
+	db.session.add(blog_post)
+	db.session.commit()
+
+	blog_post_dict: dict = {
+		"id": blog_post.id,
+		"user_id": blog_post.user_id,
+		"title": blog_post.title,
+		"body": blog_post.body,
+		"created_at": blog_post.created_at
+	}
+
+	return jsonify(blog_post_dict), 201
 
 @app.route(rule="/blog-posts/<user_id>", methods=["GET"])
 def get_all_blog_posts_by_user(user_id: int):
