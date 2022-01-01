@@ -22,7 +22,7 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 
-import linked_list
+from linked_list import LinkedList
 
 #: import_name: the name of the application package
 app = Flask(import_name=__name__)
@@ -119,7 +119,7 @@ def create_user() -> dict:
 @app.route(rule="/users/descending_id", methods=["GET"])
 def get_all_users_in_descending_order() -> list:
 	users: User = User.query.all()
-	users_linked_list: linked_list.LinkedList = linked_list.LinkedList()
+	users_linked_list: LinkedList = LinkedList()
 
 	for user in users:
 		users_linked_list.add_front(
@@ -139,7 +139,7 @@ def get_all_users_in_descending_order() -> list:
 @app.route(rule="/users/ascending_id", methods=["GET"])
 def get_users_in_ascending_order() -> list:
 	users: User = User.query.all()
-	users_linked_list: linked_list.LinkedList = linked_list.LinkedList()
+	users_linked_list: LinkedList = LinkedList()
 
 	for user in users:
 		users_linked_list.add_back(
