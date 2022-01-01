@@ -187,7 +187,7 @@ def delete_user(id: int):
 			"result": False,
 			"message": f"There is not user with id: {id} registered!"
 			}
-		), 200
+		), 400
 
 	db.session.delete(user)
 	db.session.commit()
