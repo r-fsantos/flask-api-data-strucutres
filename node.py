@@ -16,8 +16,8 @@ class Node:
 		data: Any,
 		next_node: None  # can be Node as well
 	) -> None:
-		self._data: Any = data
-		self._next_node: Node = next_node
+		self._data = data
+		self._next_node = next_node
 	
 	def set_data(self, data: Any) -> None:
 		self._data = data
