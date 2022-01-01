@@ -79,12 +79,6 @@ class LinkedList:
 
 
 if __name__ == "__main__":
-	node4 = Node(data="4", next_node=None)
-	node3 = Node(data="3", next_node=node4)
-	node2 = Node(data="2", next_node=node3)
-	node1 = Node(data="1", next_node=node2)
-	node0 = Node(data="0", next_node=node1)
-
 	linked_list: LinkedList = LinkedList()
 	print("Creating the very first linked list:")
 	linked_list.print()
