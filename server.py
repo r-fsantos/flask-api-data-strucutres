@@ -158,23 +158,25 @@ def get_users_in_ascending_order() -> list:
 
 @app.route(rule="/users/<id>", methods=["GET"])
 def get_user_by_id(id: int) -> list:
-	users: User = User.query.all()
-	users_linked_list: linked_list.LinkedList = linked_list.LinkedList()
+	user: User = User.query.filter_by(id=id).first()
 
-	for user in users:
-		users_linked_list.add_front(
-			data={
-				"id": user.id,
-				"name": user.name,
-				"email": user.email,
-				"address": user.address,
-				"phone": user.phone
+	if not user:
+		return jsonify(
+			{
+			"result": False,
+			"message": f"There is not user with id: {id} registered!"
 			}
-		)
+		), 400
 
-	user: dict = users_linked_list.get_user_by_id(id=int(id))
+	user_dict: dict = {
+		"id": user.id,
+		"name": user.name,
+		"email": user.email,
+		"address": user.address,
+		"phone": user.phone
+	}
 
-	return jsonify(user), 200
+	return jsonify(user_dict), 200
 
 @app.route(rule="/users/<id>", methods=["DELETE"])
 def delete_user(id: int):
