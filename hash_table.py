@@ -73,7 +73,7 @@ class HashTable:
 		"""Returns the unicode point from a single-char (char) string"""
 		return ord(char)
 	
-	def	print_table(self) -> None:
+	def	print(self) -> None:
 		print("{")
 		for i, val in enumerate(self._hash_table):
 			if val is None:
@@ -104,4 +104,4 @@ if __name__ == "__main__":
 	ht.inserting(key="Meu nome", value="dos")
 	ht.inserting(key="Meu nome", value="Santos")
 	ht.inserting(key="Meu nome", value="Junior")
-	ht.print_table()
+	ht.print()
