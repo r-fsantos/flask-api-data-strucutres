@@ -4,8 +4,9 @@
 Main file application
 """
 
-from datetime import datetime
+import random
 from os import name
+from datetime import datetime
 
 # ORM imports
 from sqlalchemy import event
@@ -24,6 +25,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from hash_table import HashTable
 from linked_list import LinkedList
+from binary_search_tree import BinarySearchTree
 
 #: import_name: the name of the application package
 app = Flask(import_name=__name__)
@@ -238,13 +240,38 @@ def create_blog_post(user_id: int):
 
 	return jsonify(blog_post_dict), 201
 
-@app.route(rule="/blog-posts/<user_id>", methods=["GET"])
+@app.route(rule="/users/blog-posts/<user_id>", methods=["GET"])
 def get_all_blog_posts_by_user(user_id: int):
 	pass
 
-@app.route(rule="/blog-posts/<id>", methods=["GET"])
-def get_blog_post(id: int):
-	pass
+@app.route(rule="/blog-posts/<blog_post_id>", methods=["GET"])
+def get_blog_post(blog_post_id: int):
+	blog_posts: list = BlogPost.query.all()  # ascending order
+	random.shuffle(blog_posts)
+	
+	bst: BinarySearchTree = BinarySearchTree()
+
+	for blog_post in blog_posts:
+		bst.insert(
+			data={
+				"id": blog_post.id,
+				"user_id": blog_post.user_id,
+				"title": blog_post.title,
+				"body": blog_post.body,
+			}
+		)
+	
+	found_blog_post: bool = bst.search(id=blog_post_id)
+
+	if not found_blog_post:
+		return jsonify(
+			{
+				"success": False,
+				"message": f"BlogPost {blog_post_id} not found."
+				}
+		), 404
+	
+	return jsonify(found_blog_post), 200
 
 @app.route(rule="/blog-posts/<id>", methods=["DELETE"])
 def delete_blog_post(id: int):
