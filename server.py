@@ -23,9 +23,11 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 
+from api_queue import ApiQueue
 from hash_table import HashTable
 from linked_list import LinkedList
 from binary_search_tree import BinarySearchTree
+from node import Node
 
 #: import_name: the name of the application package
 app = Flask(import_name=__name__)
@@ -273,8 +275,49 @@ def get_blog_post(blog_post_id: int):
 	
 	return jsonify(found_blog_post), 200
 
+@app.route(rule="/blog-posts/numeric-body", methods=["GET"])
+def get_numeric_bodies_from_all_blog_posts() -> dict:
+	blog_posts: list = BlogPost.query.all()
+
+	if blog_posts is None:
+		return jsonify(
+			{
+				"success": False,
+				"message": "There are not Blog Posts!"
+			}
+		), 404
+	
+	queue: ApiQueue = ApiQueue()
+
+	for blog_post in blog_posts:
+		queue.enqueue(data=blog_post)
+
+	numeric_body: int = 0
+	return_list: list = []
+	blog_post_count: int = len(blog_posts)
+
+	for _ in range(blog_post_count):
+		blog_post: Node = queue.dequeue()
+
+		# todo: refactor _data to data or get_data()
+		for char in blog_post._data.body:
+			numeric_body += ord(char)
+		
+			blog_post._data.body = numeric_body
+
+		return_list.append(
+			{
+				"id": blog_post._data.id,
+				"user_id": blog_post._data.user_id,
+				"title": blog_post._data.title,
+				"body": blog_post._data.body
+			}
+		)
+
+	return jsonify(return_list), 200
+
 @app.route(rule="/blog-posts/<id>", methods=["DELETE"])
-def delete_blog_post(id: int):
+def delete_blog_post(id: int) -> dict:
 	pass
 
 
