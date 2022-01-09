@@ -23,11 +23,12 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 
+from node import Node
+from stack import Stack
 from api_queue import ApiQueue
 from hash_table import HashTable
 from linked_list import LinkedList
 from binary_search_tree import BinarySearchTree
-from node import Node
 
 #: import_name: the name of the application package
 app = Flask(import_name=__name__)
@@ -316,9 +317,35 @@ def get_numeric_bodies_from_all_blog_posts() -> dict:
 
 	return jsonify(return_list), 200
 
-@app.route(rule="/blog-posts/<id>", methods=["DELETE"])
-def delete_blog_post(id: int) -> dict:
-	pass
+@app.route(rule="/blog-posts/delete/last-ten", methods=["DELETE"])
+def delete_last_ten_blog_posts() -> dict:
+	blog_posts: list = BlogPost.query.all()
+
+	stack: Stack = Stack()
+
+	for blog_post in blog_posts:
+		stack.push(data=blog_post)
+	
+	deleted_posts: list = []
+	for _ in range(10):
+		blog_post: Node = stack.pop()
+		
+		deleted_posts.append(
+			{
+				"id": blog_post._data.id,
+				"user_id": blog_post._data.user_id
+			}
+		)
+		db.session.delete(blog_post._data)
+		db.session.commit()
+	
+	return jsonify(
+		{
+			"success": True,
+			"message": "Last 10 posts successfully deleted",
+			"deleted_posts": deleted_posts
+		}
+	), 200
 
 
 if __name__ == "__main__":
